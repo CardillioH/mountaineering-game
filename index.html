@@ -2,15 +2,26 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=/game/index.html">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="0; url=game/">
   <title>По ту сторону вершины</title>
   <script>
-    window.location.href = "/game/index.html";
+    (function() {
+      var p = window.location.pathname;
+      if (!p.endsWith("/")) {
+        if (p.endsWith("/index.html")) {
+          p = p.substring(0, p.lastIndexOf("/index.html") + 1);
+        } else {
+          p = p + "/";
+        }
+      }
+      window.location.replace(p + "game/");
+    })();
   </script>
 </head>
 <body style="background:#0c121b; color:#ffffff; font-family:system-ui, -apple-system, sans-serif; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; margin:0;">
   <h2 style="margin-bottom: 12px;">По ту сторону вершины</h2>
-  <p>Перенаправление в игру... <a href="/game/index.html" style="color:#64b5f6; text-decoration:underline;">Открыть вручную</a></p>
-  <p style="margin-top: 24px;"><a href="/концепт_арт_галерея.html" style="color:#a0aec0; font-size:14px;">Галерея концепт-артов</a></p>
+  <p>Перенаправление в игру... <a href="game/" style="color:#64b5f6; text-decoration:underline;">Открыть игру</a></p>
+  <p style="margin-top: 24px;"><a href="концепт_арт_галерея.html" style="color:#a0aec0; font-size:14px;">Галерея концепт-артов</a></p>
 </body>
 </html>
