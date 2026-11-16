@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Full Flow Test: Все уровни 1-4 • Пик Сталина 1933</title>
+  <link rel="stylesheet" href="style.css?v=20261015_2140">
+  <style>
+    body { background: #070c14; margin: 0; padding: 12px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #f1f5f9; }
+    iframe { width: 1280px; height: 720px; border: 2px solid #38bdf8; display: block; margin: 8px auto; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+    .controls { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; max-width: 1300px; margin: 0 auto; }
+    .btn-group { display: flex; gap: 4px; padding: 4px 8px; background: rgba(15,23,42,0.7); border: 1px solid rgba(56,189,248,0.25); border-radius: 6px; align-items: center; }
+    .group-label { font-size: 11px; text-transform: uppercase; font-weight: 800; color: #94a3b8; margin-right: 4px; letter-spacing: 0.5px; }
+    button { background: #1e293b; color: white; border: 1px solid #334155; padding: 6px 12px; font-weight: 600; font-size: 12px; cursor: pointer; border-radius: 4px; transition: all 0.15s ease; }
+    button:hover { background: #38bdf8; color: #020617; border-color: #38bdf8; }
+    button.primary { background: #ff5500; border-color: #ff5500; }
+    button.primary:hover { background: #ff7733; }
+    button.l2 { background: #0284c7; border-color: #0284c7; }
+    button.l2:hover { background: #38bdf8; color: #020617; }
+    button.l3 { background: #9333ea; border-color: #9333ea; }
+    button.l3:hover { background: #c084fc; color: #020617; }
+    button.l4 { background: #e11d48; border-color: #e11d48; }
+    button.l4:hover { background: #fb7185; color: #020617; }
+    button.green { background: #059669; border-color: #059669; }
+    button.green:hover { background: #34d399; color: #020617; }
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <div class="btn-group">
+      <span class="group-label">База</span>
+      <button onclick="step1Pack()" class="primary">1. Сбор (9.8 кг)</button>
+    </div>
+
+    <div class="btn-group">
+      <span class="group-label">Уровень 1</span>
+      <button onclick="step2Platformer()">Ур 1: Старт</button>
+      <button onclick="step3WalkToIceWall()">К стене</button>
+      <button onclick="step4StartClimb()">Мини-игра Лед</button>
+      <button onclick="step5HitHolds()">Пройти стену</button>
+    </div>
+
+    <div class="btn-group">
+      <span class="group-label">Уровень 2 (Ледопад)</span>
+      <button onclick="step6StartLevel2()" class="l2">Ур 2: Старт</button>
+      <button onclick="step7Ascent()" class="l2">Канат 1 (Вверх)</button>
+      <button onclick="step7UpperPlat()" class="l2">Верхняя полка</button>
+      <button onclick="step7Descent()" class="l2">Канат 2 (Спуск)</button>
+      <button onclick="step8Comrade()" class="green">Спасти товарища</button>
+      <button onclick="step9Crumbling()" class="l2">Льдины</button>
+      <button onclick="step9FinishLevel2()" class="green">Победа Ур 2</button>
+    </div>
+
+    <div class="btn-group">
+      <span class="group-label">Уровень 3 (Шторм)</span>
+      <button onclick="step10StartLevel3()" class="l3">Ур 3: Старт (Гребень)</button>
+      <button onclick="step11TriggerGale()" class="l3">Шквал 36 м/с</button>
+      <button onclick="step12MoveToShelter()" class="l3">В укрытие 🛡️</button>
+      <button onclick="step13MoveToTent()" class="l3">К палатке 6800м</button>
+      <button onclick="step14StartBivouac()" class="l3">Топление льда</button>
+      <button onclick="step15FinishBivouac()" class="green">Победа Ур 3</button>
+      <button onclick="step15GameOverL3()" style="background: #991b1b; color: white;">Game Over Ур 3</button>
+    </div>
+
+    <div class="btn-group">
+      <span class="group-label">Уровень 4 (Вершина)</span>
+      <button onclick="step16StartLevel4()" class="l4">Ур 4: Старт (7495м)</button>
+      <button onclick="step17DepleteO2()" class="l4">Сброс O2 (Гипоксия)</button>
+      <button onclick="step18StartO2Swap()" class="l4">Смена баллона</button>
+      <button onclick="step19CompleteO2Swap()" class="green">O2 заменен</button>
+      <button onclick="step20MoveToSummit()" class="l4">К Обелиску</button>
+      <button onclick="step21HoistFlag()" class="green">Поднять вымпел 🚩</button>
+      <button onclick="step22ShowEpilogue()" class="primary">Финал / Эпилог</button>
+      <button onclick="step23GameOverL4()" style="background: #991b1b; color: white;">Game Over Ур 4</button>
+    </div>
+  </div>
+
+  <iframe id="game-frame" src="index.html"></iframe>
+
+<script>
+const frame = document.getElementById("game-frame");
+
+function getWin() {
+  return frame.contentWindow;
+}
+
+function ensureGearPacked() {
+  const w = getWin();
+  w.packedIds = ['sunglasses', 'crampons', 'ice_axe', 'thermos', 'downsuit', 'harness', 'firstaid', 'oxygen'];
+  if (w.renderTarp) w.renderTarp();
+  if (w.updateStationUI) w.updateStationUI();
+}
+
+function step1Pack() {
+  ensureGearPacked();
+}
+
+// LEVEL 1
+function step2Platformer() {
+  ensureGearPacked();
+  const w = getWin();
+  w.switchScreen("screen-platformer");
+}
+
+function step3WalkToIceWall() {
+  step2Platformer();
+  const w = getWin();
+  setTimeout(() => {
+    if (w.level1Game) {
+      if (w.level1Game.closeComicDialog) w.level1Game.closeComicDialog();
+      const p = w.level1Game;
+      p.player.x = 2340;
+      p.player.y = 505 - p.player.h;
+      p.camera.x = 1320;
+      p.player.grounded = true;
+      p.activeInteract = p.interactives.find(it => it.id === "ice_wall");
+      setTimeout(() => {
+        p.openIceWallDialog();
+      }, 100);
+    }
+  }, 250);
+}
+
+function step4StartClimb() {
+  step3WalkToIceWall();
+  const w = getWin();
+  setTimeout(() => {
+    const btn = w.document.getElementById("btn-dialog-close");
+    if (btn) btn.click();
+  }, 400);
+}
+
+function step5HitHolds() {
+  const w = getWin();
+  if (w.climbGame) {
+    for (let i = 0; i < 12; i++) {
+      if (w.climbGame.holds && w.climbGame.holds.length > 0) {
+        w.climbGame.attemptHoldHit(w.climbGame.holds[0]);
+      }
+    }
+  }
+}
+
+// LEVEL 2
+function step6StartLevel2() {
+  ensureGearPacked();
+  const w = getWin();
+  w.switchScreen("screen-level2");
+}
+
+function step7Ascent() {
+  const w = getWin();
+  if (w.level2Game) {
+    w.level2Game.player.x = 360;
+    w.level2Game.player.y = 520 - w.level2Game.player.h;
+    w.level2Game.startRopeAscent();
+  }
+}
+
+function step7UpperPlat() {
+  const w = getWin();
+  if (w.level2Game) {
+    const g = w.level2Game;
+    g.player.x = 650;
+    g.player.y = 160 - g.player.h;
+    g.player.grounded = true;
+    g.camera.x = 350;
+  }
+}
+
+function step7Descent() {
+  const w = getWin();
+  if (w.level2Game) {
+    const g = w.level2Game;
+    g.player.x = 920;
+    g.player.y = 160 - g.player.h;
+    g.attachToRope("rope2", 0.0);
+  }
+}
+
+function step8Comrade() {
+  const w = getWin();
+  if (w.level2Game) {
+    const g = w.level2Game;
+    g.player.x = 1920;
+    g.player.y = 470 - g.player.h;
+    g.player.grounded = true;
+    g.camera.x = 1550;
+  }
+}
+
+function step9Crumbling() {
+  const w = getWin();
+  if (w.level2Game) {
+    const g = w.level2Game;
+    g.comrade.saved = true;
+    g.stats.comradeSaved = true;
+    g.player.x = 2400;
+    g.player.y = 480 - g.player.h;
+    g.player.grounded = true;
+    g.camera.x = 1950;
+  }
+}
+
+function step9FinishLevel2() {
+  const w = getWin();
+  if (w.level2Game) {
+    w.level2Game.finishLevel();
+  }
+}
+
+// LEVEL 3
+function step10StartLevel3() {
+  ensureGearPacked();
+  const w = getWin();
+  w.switchScreen("screen-level3");
+}
+
+function step11TriggerGale() {
+  const w = getWin();
+  if (w.level3Game) {
+    w.level3Game.wind.state = "gale";
+    w.level3Game.wind.timer = 300;
+    w.level3Game.wind.speedMps = 36;
+    w.level3Game.wind.forceX = -0.55;
+    w.level3Game.showToast("⚠️ УРАГАННЫЙ ШКВАЛ 36 М/С! ВРУБИТЕСЬ ЛЕДОРУБОМ [S] ИЛИ СПРЯЧЬТЕСЬ В НИШУ!");
+  }
+}
+
+function step12MoveToShelter() {
+  const w = getWin();
+  if (w.level3Game) {
+    const g = w.level3Game;
+    g.player.x = 940;
+    g.player.y = 440 - g.player.h;
+    g.player.vx = 0;
+    g.player.vy = 0;
+    g.player.grounded = true;
+    g.camera.x = 650;
+  }
+}
+
+function step13MoveToTent() {
+  const w = getWin();
+  if (w.level3Game) {
+    const g = w.level3Game;
+    g.player.x = 3200;
+    g.player.y = 380 - g.player.h;
+    g.player.vx = 0;
+    g.player.vy = 0;
+    g.player.grounded = true;
+    g.camera.x = 2450;
+  }
+}
+
+function step14StartBivouac() {
+  const w = getWin();
+  if (!w.level3Game) {
+    step10StartLevel3();
+    setTimeout(() => {
+      step13MoveToTent();
+      setTimeout(() => {
+        if (w.level3Game) w.level3Game.openBivouacModal();
+      }, 100);
+    }, 250);
+    return;
+  }
+  w.switchScreen("screen-level3");
+  step13MoveToTent();
+  setTimeout(() => {
+    if (w.level3Game) w.level3Game.openBivouacModal();
+  }, 100);
+}
+
+function step15FinishBivouac() {
+  const w = getWin();
+  if (w.level3Game) {
+    const overlay = w.document.getElementById("bivouac-modal-overlay");
+    if (overlay) overlay.classList.remove("active");
+    w.level3Game.tent.waterMelted = true;
+    w.level3Game.stats.waterMelted = true;
+    w.level3Game.openVictoryModal();
+  }
+}
+
+// LEVEL 4
+function step16StartLevel4() {
+  ensureGearPacked();
+  const w = getWin();
+  w.switchScreen("screen-level4");
+}
+
+function step17DepleteO2() {
+  const w = getWin();
+  if (w.level4Game) {
+    w.level4Game.oxygen.pressure = 25;
+    w.level4Game.oxygen.vignetteIntensity = 0.85;
+    w.level4Game.oxygen.blackoutTimer = 600;
+    w.level4Game.showToast("⚠️ КРИТИЧЕСКИЙ УРОВЕНЬ O2 (25 АТМ)! НАЧИНАЕТСЯ ГИПОКСИЯ!");
+  }
+}
+
+function step18StartO2Swap() {
+  const w = getWin();
+  if (!w.level4Game) {
+    step16StartLevel4();
+    setTimeout(() => {
+      if (w.level4Game) {
+        const g = w.level4Game;
+        g.player.x = 1800;
+        g.player.y = 420 - g.player.h;
+        g.player.vx = 0;
+        g.player.vy = 0;
+        g.player.grounded = true;
+        g.camera.x = 1250;
+        g.openOxygenModal();
+      }
+    }, 250);
+    return;
+  }
+  w.switchScreen("screen-level4");
+  const g = w.level4Game;
+  g.player.x = 1800;
+  g.player.y = 420 - g.player.h;
+  g.player.vx = 0;
+  g.player.vy = 0;
+  g.player.grounded = true;
+  g.camera.x = 1250;
+  g.openOxygenModal();
+}
+
+function step19CompleteO2Swap() {
+  const w = getWin();
+  if (w.level4Game) {
+    const overlay = w.document.getElementById("oxygen-modal-overlay");
+    if (overlay) overlay.classList.remove("active");
+    w.level4Game.oxygen.tank2Loaded = true;
+    w.level4Game.oxygen.pressure = 240;
+    w.level4Game.oxygen.vignetteIntensity = 0;
+    w.level4Game.stats.tankSwapped = true;
+    w.level4Game.showToast("✓ БАЛЛОН ЗАМЕНЕН! Давление 240 атм, дыхание восстановлено.");
+  }
+}
+
+function step20MoveToSummit() {
+  const w = getWin();
+  if (w.level4Game) {
+    const g = w.level4Game;
+    g.player.x = 3420;
+    g.player.y = 340 - g.player.h;
+    g.player.vx = 0;
+    g.player.vy = 0;
+    g.player.grounded = true;
+    g.camera.x = 2600;
+  }
+}
+
+function step21HoistFlag() {
+  const w = getWin();
+  if (!w.level4Game) {
+    step16StartLevel4();
+    setTimeout(() => {
+      step20MoveToSummit();
+      setTimeout(() => {
+        if (w.level4Game) w.level4Game.hoistSummitFlag();
+      }, 100);
+    }, 250);
+    return;
+  }
+  w.switchScreen("screen-level4");
+  step20MoveToSummit();
+  setTimeout(() => {
+    if (w.level4Game) w.level4Game.hoistSummitFlag();
+  }, 100);
+}
+
+function step22ShowEpilogue() {
+  const w = getWin();
+  if (!w.level4Game) {
+    step16StartLevel4();
+    setTimeout(() => {
+      if (w.level4Game) w.level4Game.openSummitVictoryModal();
+    }, 250);
+    return;
+  }
+  w.switchScreen("screen-level4");
+  w.level4Game.openSummitVictoryModal();
+}
+
+function step15GameOverL3() {
+  const w = getWin();
+  if (!w.level3Game) {
+    step10StartLevel3();
+    setTimeout(() => {
+      if (w.level3Game) w.level3Game.triggerGameOver("Срыв с гребня под порывом урагана (36 м/с)! Вы не успели укрыться в нише или пригнуться.");
+    }, 250);
+    return;
+  }
+  w.switchScreen("screen-level3");
+  w.level3Game.triggerGameOver("Срыв с гребня под порывом урагана (36 м/с)! Вы не успели укрыться в нише или пригнуться.");
+}
+
+function step23GameOverL4() {
+  const w = getWin();
+  if (!w.level4Game) {
+    step16StartLevel4();
+    setTimeout(() => {
+      if (w.level4Game) w.level4Game.triggerGameOver("Фатальная гипоксия в Зоне Смерти! Давление кислорода упало до 0 атм.");
+    }, 250);
+    return;
+  }
+  w.switchScreen("screen-level4");
+  w.level4Game.triggerGameOver("Фатальная гипоксия в Зоне Смерти! Давление кислорода упало до 0 атм.");
+}
+
+// Auto-run if query param given
+window.addEventListener("load", () => {
+  const params = new URLSearchParams(window.location.search);
+  const auto = params.get("auto");
+  if (auto === "wall_dialog") {
+    setTimeout(step3WalkToIceWall, 600);
+  } else if (auto === "climb") {
+    setTimeout(step4StartClimb, 600);
+  } else if (auto === "l2_start") {
+    setTimeout(step6StartLevel2, 400);
+  } else if (auto === "l3_start") {
+    setTimeout(step10StartLevel3, 400);
+  } else if (auto === "l3_bivouac") {
+    setTimeout(step14StartBivouac, 400);
+  } else if (auto === "l4_start") {
+    setTimeout(step16StartLevel4, 400);
+  } else if (auto === "l4_swap") {
+    setTimeout(step18StartO2Swap, 400);
+  } else if (auto === "l4_summit") {
+    setTimeout(step21HoistFlag, 400);
+  } else if (auto === "epilogue") {
+    setTimeout(step22ShowEpilogue, 400);
+  }
+});
+</script>
+</body>
+</html>

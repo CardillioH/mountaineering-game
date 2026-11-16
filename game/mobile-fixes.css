@@ -1,0 +1,32 @@
+/* Мобильные правки: подключается ПОСЛЕ style.css */
+
+/* Плашка описания предмета: компактнее на низких (альбомных) экранах телефона.
+   Позицию и границы экрана контролирует game.js (moveTooltip). */
+.field-notebook-tooltip {
+  max-width: min(310px, calc(100vw - 20px));
+  box-sizing: border-box;
+}
+
+@media (max-height: 520px) {
+  .field-notebook-tooltip {
+    padding: 8px 12px !important;
+  }
+  .field-notebook-tooltip .fn-header { margin-bottom: 2px; }
+  .field-notebook-tooltip .fn-title {
+    font-size: 15px !important;
+    line-height: 1.15 !important;
+    margin: 2px 0 4px !important;
+  }
+  .field-notebook-tooltip .fn-desc {
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+    margin: 0 0 6px !important;
+  }
+  .field-notebook-tooltip .fn-footer { font-size: 10px !important; padding-top: 5px !important; }
+}
+
+/* Холст платформера: размер задаёт JS (DPR-рендер), страница не должна его растягивать/скроллить */
+.platformer-canvas {
+  display: block;
+  touch-action: none;
+}

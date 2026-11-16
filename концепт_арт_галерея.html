@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ассеты и визуальный концепт: 2D-Платформер «По ту сторону вершины»</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0e13;
+      --card-bg: #141922;
+      --border: #232c3a;
+      --accent: #ff5500;
+      --accent-blue: #38bdf8;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --mono: 'Fira Code', monospace;
+      --sans: 'Inter', sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.6;
+      padding: 30px 20px 100px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 24px;
+      margin-bottom: 40px;
+    }
+    .badge {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      background: rgba(255, 85, 0, 0.12);
+      border: 1px solid rgba(255, 85, 0, 0.3);
+      padding: 4px 10px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    .sub {
+      color: var(--text-muted);
+      font-size: 16px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 12px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+    .nav-link {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-muted);
+      text-decoration: none;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+    .nav-link:hover {
+      color: #fff;
+      border-color: var(--accent);
+      background: rgba(255, 85, 0, 0.1);
+    }
+    .section-headline {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 50px 0 20px;
+      padding-left: 14px;
+      border-left: 4px solid var(--accent);
+      color: var(--text);
+    }
+    .art-section {
+      margin-bottom: 50px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .art-image-box {
+      width: 100%;
+      background: #090c10;
+      text-align: center;
+      position: relative;
+    }
+    .art-image-box img {
+      width: 100%;
+      max-height: 700px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+    }
+    .art-content {
+      padding: 24px 30px;
+    }
+    .art-meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .art-tag {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent-blue);
+    }
+    .art-title {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .art-desc {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+    .details-box {
+      background: rgba(0,0,0,0.3);
+      border-left: 3px solid var(--accent);
+      padding: 12px 16px;
+      border-radius: 0 6px 6px 0;
+      font-size: 13px;
+    }
+    .details-box strong { color: #fff; }
+    .balance-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 13px;
+    }
+    .balance-table th, .balance-table td {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+    .balance-table th {
+      background: rgba(255,255,255,0.04);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+    }
+    .balance-table td.weight {
+      font-family: var(--mono);
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <span class="badge">КРАСНОЯРСКАЯ ШКОЛА АЛЬПИНИЗМА • АССЕТЫ ИГРЫ</span>
+      <h1>ГЕНЕРАЦИЯ АССЕТОВ 2D-ПЛАТФОРМЕРА</h1>
+      <p class="sub">Единый стиль графической новеллы (Ligne Claire): персонаж в T-позе, спрайты анимаций, иконки экипировки, локация уровня и карта маршрута.</p>
+      <div class="nav-links">
+        <a class="nav-link" href="#char-tpose">1. Персонаж (T-поза)</a>
+        <a class="nav-link" href="#char-sprites">2. Спрайт-лист анимаций</a>
+        <a class="nav-link" href="#gear-grid">3. Иконки экипировки</a>
+        <a class="nav-link" href="#env-level">4. Локация уровня</a>
+        <a class="nav-link" href="#env-map">5. Карта маршрута</a>
+        <a class="nav-link" href="#balance">6. Баланс рюкзака (10.0 кг)</a>
+      </div>
+    </header>
+
+    <!-- СЕКЦИЯ 1: ПЕРСОНАЖ В Т-ПОЗЕ -->
+    <h2 class="section-headline" id="char-tpose">1. Персонаж альпиниста в Т-позе (Для риггинга и анимации)</h2>
+    <article class="art-section">
+      <div class="art-image-box">
+        <img src="assets/character/climber_t_pose.jpg" alt="Альпинист в Т-позе">
+      </div>
+      <div class="art-content">
+        <div class="art-meta-row">
+          <span class="art-tag">ФАЙЛ: assets/character/climber_t_pose.jpg</span>
+          <span style="font-family: var(--mono); font-size: 12px; color: #10b981;">● РАЗРЕШЕНИЕ: 1:1 SQUARE • НЕЙТРАЛЬНЫЙ ФОН</span>
+        </div>
+        <h3 class="art-title">Модель альпиниста в Т-позе (Фронтальный вид)</h3>
+        <p class="art-desc">
+          Фронтальный рендер персонажа с горизонтально расставленными руками и прямыми ногами на нейтральном сером фоне без теней.
+          Сигнальный пуховой комбинезон Safety Orange (#FF5500), усиленные темно-серые вставки на локтях, коленях и сиденье, 
+          высотные двухслойные ботинки с кошками, обвязка Абалакова с петлями и карабинами, штурмовой рюкзак за спиной и альпинистские очки.
+        </p>
+        <div class="details-box">
+          <strong>Готов к анимации:</strong> Эту модель можно загрузить в любой сторонний сервис (например, Mixamo, Spine 2D или онлайн-аниматоры костей), чтобы наложить скелетный риггинг и сгенерировать любые кастомные анимации.
+        </div>
+      </div>
+    </article>
+
+    <!-- СЕКЦИЯ 2: СПРАЙТ-ЛИСТ АНИМАЦИЙ -->
+    <h2 class="section-headline" id="char-sprites">2. Основные состояния и действия персонажа</h2>
+    <article class="art-section">
+      <div class="art-image-box">
+        <img src="assets/character/climber_sprite_sheet.jpg" alt="Спрайт-лист движений альпиниста">
+      </div>
+      <div class="art-content">
+        <div class="art-meta-row">
+          <span class="art-tag">ФАЙЛ: assets/character/climber_sprite_sheet.jpg</span>
+          <span style="font-family: var(--mono); font-size: 12px; color: var(--accent);">● 5 КЛЮЧЕВЫХ СОСТОЯНИЙ ПЛАТФОРМЕРА</span>
+        </div>
+        <h3 class="art-title">Лист состояний (Action States)</h3>
+        <p class="art-desc">
+          Пять ключевых игровых поз персонажа в едином стиле:
+          <strong>1) IDLE</strong> — покой, дыхание с паром на морозе, ледоруб в руке;
+          <strong>2) RUN / STRIDE</strong> — динамичный бег/шаг по снежному насту;
+          <strong>3) JUMP / MANTLE</strong> — прыжок и захват руками за верхний скальный уступ;
+          <strong>4) ICE CLIMBING</strong> — вертикальное лазание по ледяной стене с попеременными ударами ледоруба;
+          <strong>5) COLLAPSED</strong> — падение на колени при кислородном истощении / обморожении.
+        </p>
+        <div class="details-box">
+          <strong>Применение в игре:</strong> Легко нарезается на отдельные спрайты для циклов движения в Canvas/Phaser.
+        </div>
+      </div>
+    </article>
+
+    <!-- СЕКЦИЯ 3: ИКОНКИ ЭКИПИРОВКИ ДЛЯ РЮКЗАКА -->
+    <h2 class="section-headline" id="gear-grid">3. Снаряжение для рюкзака (Иконки инвентаря)</h2>
+    <article class="art-section">
+      <div class="art-image-box">
+        <img src="assets/gear/backpack_gear_items_grid.jpg" alt="Сетка предметов экипировки">
+      </div>
+      <div class="art-content">
+        <div class="art-meta-row">
+          <span class="art-tag">ФАЙЛ: assets/gear/backpack_gear_items_grid.jpg</span>
+          <span style="font-family: var(--mono); font-size: 12px; color: var(--accent-blue);">● 12 ПРЕДМЕТОВ ДЛЯ ИНВЕНТАРЯ</span>
+        </div>
+        <h3 class="art-title">Сетка изолированных предметов экипировки</h3>
+        <p class="art-desc">
+          Все 12 предметов из таблицы баланса в едином графическом стиле:
+          <br><strong>Верхний ряд (Жизненно важное):</strong> Очки кат. 4, кошки 12-зубые, штурмовой ледоруб, термос + джетбойл, пуховый комбинезон 8000m, обвязка Абалакова.
+          <br><strong>Нижний ряд:</strong> Аптечка с ампулами Дексаметазона и шприцем, кислородный баллон с редуктором и маской, зеркальная камера с зумом (ловушка!), тушенка (ловушка!), шерстяной свитер (ловушка!), городской пауэрбанк (ловушка!).
+        </p>
+        <div class="details-box">
+          <strong>Нарезка:</strong> Предметы изолированы на нейтральном фоне и готовы к нарезке на квадратные иконки для слотов рюкзака.
+        </div>
+      </div>
+    </article>
+
+    <!-- СЕКЦИЯ 4: ЛОКАЦИИ И ПАНОРАМЫ ВСЕХ 4 УРОВНЕЙ -->
+    <h2 class="section-headline" id="env-level">4. Панорамные фоны и ассеты всех 4 игровых уровней</h2>
+    
+    <!-- Уровень 1 -->
+    <article class="art-section" style="margin-bottom: 24px;">
+      <div class="art-image-box">
+        <img src="assets/environment/level1_backdrop.jpg" alt="Уровень 1: Морена и Ледовая стена (2 200 - 4 200 м)">
+      </div>
+      <div class="art-content">
+        <div class="art-meta-row">
+          <span class="art-tag">ФАЙЛ: assets/environment/level1_backdrop.jpg</span>
+          <span style="font-family: var(--mono); font-size: 12px; color: var(--accent);">● УРОВЕНЬ 1 • 2 200 → 4 200 М</span>
+        </div>
+        <h3 class="art-title">Тропа морены и Штурмовая ледовая стена</h3>
+        <p class="art-desc">
+          Первый высотный рубеж: лазурный ледник, базальтовые морены, прорезанные ледниковыми трещинами. Инструктор Евгений Абалаков дает напутствие, после чего альпинист штурмует вертикальную ледовую стену.
+        </p>
+        <div class="details-box">
+          <strong>Уникальная механика:</strong> Ознакомление с бегом/прыжками + ритмичное ледолазание ледорубами по точкам зацепа.
+        </div>
+      </div>
+    </article>
+
+    <!-- Уровень 2 -->
+    <article class="art-section" style="margin-bottom: 24px;">
+      <div class="art-image-box">
+        <img src="assets/environment/level2_backdrop.jpg" alt="Уровень 2: Ледопад Федченко и сераки (4 200 - 5 600 м)">
+      </div>
+      <div class="art-content">
+        <div class="art-meta-row">
+          <span class="art-tag">ФАЙЛ: assets/environment/level2_backdrop.jpg</span>
+          <span style="font-family: var(--mono); font-size: 12px; color: #0284c7;">● УРОВЕНЬ 2 • 4 200 → 5 600 М</span>
+        </div>
+        <h3 class="art-title">Ледопад Федченко • Навесная переправа и сераки</h3>
+        <p class="art-desc">
+          Хаос гигантских сераков, лазурные трещины и натянутый стальной трос над бездной. Встреча с обессилевшим напарником, страдающим от отека мозга.
+        </p>
+        <div class="details-box">
+          <strong>Уникальная механика:</strong> Обрушающиеся ледовые мосты (2 сек таймер) + движение по канату карабином + спасение товарища Дексаметазоном.
+        </div>
+      </div>
+    </article>
+
+    <!-- Уровень 3 -->
+    <article class="art-section" style="margin-bottom: 24px;">
+      <div class="art-image-box">
+        <img src="assets/environment/level3_backdrop.jpg" alt="Уровень 3: Штурмовой гребень и бивуак (5 600 - 6 800 м)">
+      </div>
+      <div class="art-content">
+        <div class="art-meta-row">
+          <span class="art-tag">ФАЙЛ: assets/environment/level3_backdrop.jpg</span>
+          <span style="font-family: var(--mono); font-size: 12px; color: #9333ea;">● УРОВЕНЬ 3 • 5 600 → 6 800 М</span>
+        </div>
+        <h3 class="art-title">Штурмовой гребень • Ураганный ветер и Бивуак</h3>
+        <p class="art-desc">
+          Острый как бритва снежно-фирновый нож на закате. Циклические порывы свирепого ветра до 36 м/с. На высоте 6 800 м установлена штурмовая палатка Абалакова.
+        </p>
+        <div class="details-box">
+          <strong>Уникальная механика:</strong> Скальные ниши-укрытия 🛡️ + самозадержание ледорубом в фирн [S/Вниз] + мини-игра топления льда горелкой Jetboil для штурмового термоса.
+        </div>
+      </div>
+    </article>
+
+    <!-- Уровень 4 -->
+    <article class="art-section" style="margin-bottom: 24px;">
+      <div class="art-image-box">
+        <img src="assets/environment/level4_backdrop.jpg" alt="Уровень 4: Зона Смерти и Пик Сталина (6 800 - 7 495 м)">
+      </div>
+      <div class="art-content">
+        <div class="art-meta-row">
+          <span class="art-tag">ФАЙЛ: assets/environment/level4_backdrop.jpg</span>
+          <span style="font-family: var(--mono); font-size: 12px; color: #ef4444;">● УРОВЕНЬ 4 • 6 800 → 7 495 М</span>
+        </div>
+        <h3 class="art-title">Зона Смерти • Кислородный штурм и Обелиск Пика Сталина</h3>
+        <p class="art-desc">
+          Космическое индиго-небо, луна, океан облаков под ногами и скальный обелиск высшей точки Памира (7 495 м). Симуляция физиологии критической высоты.
+        </p>
+        <div class="details-box">
+          <strong>Уникальная механика:</strong> Расход кислорода (манометр 250 атм, туннельное зрение) + экстренная смена замерзшего редуктора на Баллон №2 + водружение вымпела и эпилог.
+        </div>
+      </div>
+    </article>
+
+    <!-- СЕКЦИЯ 5: КАРТА МАРШРУТА ЭКСПЕДИЦИИ -->
+    <h2 class="section-headline" id="env-map">5. Карта высотного маршрута экспедиции</h2>
+    <article class="art-section">
+      <div class="art-image-box">
+        <img src="assets/environment/mountain_expedition_route_map.jpg" alt="Высотная карта маршрута восхождения">
+      </div>
+      <div class="art-content">
+        <div class="art-meta-row">
+          <span class="art-tag">ФАЙЛ: assets/environment/mountain_expedition_route_map.jpg</span>
+          <span style="font-family: var(--mono); font-size: 12px; color: #10b981;">● ВЫСОТНЫЙ РАЗРЕЗ ГОРООБРАЗОВАНИЯ</span>
+        </div>
+        <h3 class="art-title">Карта уровней и контрольных рубежей (2 200 – 8 848 м)</h3>
+        <p class="art-desc">
+          Топографический профиль восхождения в стиле альпинистских схем:
+          Базовый лагерь (2 200 м) → Морена и осыпи (3 800 м) → Голубой ледопад и трещины (5 400 м) → Штурмовой лагерь IV на черных скалах (7 100 м) → Гребень Зоны смерти и вершина (8 848 м). Пунктирная оранжевая линия показывает путь игрока.
+        </p>
+        <div class="details-box">
+          <strong>Использование:</strong> Может служить картой выбора зон или интерактивным экраном прогресса между высотными этапами.
+        </div>
+      </div>
+    </article>
+
+    <!-- СЕКЦИЯ 6: ТАБЛИЦА БАЛАНСА -->
+    <h2 class="section-headline" id="balance">6. Строгий математический баланс (Лимит 10.0 кг)</h2>
+    <article class="art-section" style="padding: 24px 30px;">
+      <table class="balance-table">
+        <thead>
+          <tr>
+            <th>ПРЕДМЕТ</th>
+            <th>ВЕС</th>
+            <th>НАЗНАЧЕНИЕ В ПЛАТФОРМЕРЕ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Кислородная система (баллон + редуктор + маска)</strong></td>
+            <td class="weight" style="color: var(--accent);">3.8 кг</td>
+            <td>Необходима на 8 400 м. Без нее персонаж задыхается за 15 секунд.</td>
+          </tr>
+          <tr>
+            <td><strong>Штурмовой пуховый комбинезон 8000m</strong></td>
+            <td class="weight" style="color: var(--accent);">2.0 кг</td>
+            <td>Защита от гипотермии при -35°C на скалах.</td>
+          </tr>
+          <tr>
+            <td><strong>Кошки 12-зубые + ледоруб</strong></td>
+            <td class="weight" style="color: var(--accent);">1.5 кг</td>
+            <td>Необходимы на 5 400 м для зацепа за лед и пробития ступеней.</td>
+          </tr>
+          <tr>
+            <td><strong>Высотный термос + горелка с газом</strong></td>
+            <td class="weight" style="color: var(--accent);">1.2 кг</td>
+            <td>Топление снега. Защита от сгущения крови и тромбов.</td>
+          </tr>
+          <tr>
+            <td><strong>Страховочная обвязка Абалакова + 2 карабина</strong></td>
+            <td class="weight" style="color: var(--accent);">0.8 кг</td>
+            <td>Прохождение навесных перил над трещинами.</td>
+          </tr>
+          <tr>
+            <td><strong>Аптечка (Дексаметазон + Диакарб)</strong></td>
+            <td class="weight" style="color: var(--accent);">0.4 кг</td>
+            <td>Купирование отека мозга и снятие тремора на 7 100 м.</td>
+          </tr>
+          <tr>
+            <td><strong>Очки альпинистские кат. 4 с шорами</strong></td>
+            <td class="weight" style="color: var(--accent);">0.1 кг</td>
+            <td>Защита от снежной слепоты на 3 800 м.</td>
+          </tr>
+          <tr style="background: rgba(16, 185, 129, 0.1);">
+            <td><strong>ИТОГО ЖИЗНЕННО ВАЖНОГО:</strong></td>
+            <td class="weight" style="color: #10b981;">9.8 кг</td>
+            <td><strong>Запас до критического предела: ровно 0.2 кг!</strong></td>
+          </tr>
+          <tr style="background: rgba(239, 68, 68, 0.08);">
+            <td><strong>Зеркальная камера со штативом (Ложный предмет)</strong></td>
+            <td class="weight" style="color: #ef4444;">2.8 кг</td>
+            <td>«Для красивого победного фото». При взятии вес = 12.6 кг (перегруз). Игроку приходится выложить либо кислород, либо кошки, что ведет к неминуемой гибели!</td>
+          </tr>
+        </tbody>
+      </table>
+    </article>
+  </div>
+</body>
+</html>

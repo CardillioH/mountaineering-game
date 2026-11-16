@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Preview Mini-Game - Ice Wall Climb (3 800 m - 4 200 m)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@600;700&family=Oswald:wght@500;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body, html { margin:0; padding:0; width:100%; height:100%; overflow:hidden; background:#0b1017; }
+    .game-viewport { width: 100vw; height: 100vh; max-width: none; border-radius: 0; }
+    #screen-climb { display: flex !important; width: 100%; height: 100%; }
+  </style>
+</head>
+<body>
+<div class="game-viewport">
+  <div class="screen-view active" id="screen-climb">
+    <div class="climb-viewport">
+      <canvas id="climb-canvas" class="climb-canvas"></canvas>
+
+      <!-- Верхняя шапка и навигация мини-игры -->
+      <header class="climb-header">
+        <button class="btn-return-trail" id="btn-return-trail" title="Вернуться назад к тропе">
+          ← НАЗАД К ТРОПЕ (1 УРОВЕНЬ)
+        </button>
+        <div class="climb-title-block">
+          <h2 class="climb-title">ШТУРМ ЛЕДОВОЙ СТЕНЫ • ВЕРТИКАЛЬНЫЙ ПОДЪЕМ</h2>
+          <p class="climb-subtitle">СВОБОДНОЕ ЛЕДОЛАЗАНИЕ • КРАСНОЯРСКАЯ ШКОЛА АЛЬПИНИЗМА</p>
+        </div>
+        <div class="climb-hud-stamina-wrap">
+          <div class="stamina-label-row">
+            <span class="stamina-title">ВЫНОСЛИВОСТЬ ХВАТА:</span>
+            <span class="stamina-val" id="climb-hud-stamina-text">100%</span>
+          </div>
+          <div class="stamina-bar-track">
+            <div class="stamina-bar-fill" id="climb-hud-stamina-fill"></div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Вертикальная шкала высоты и прогресса справа -->
+      <aside class="climb-altitude-gauge">
+        <div class="gauge-top-label">4 200 М • ВЕРШИНА</div>
+        <div class="gauge-track">
+          <div class="gauge-fill" id="climb-hud-progress-fill"></div>
+          <div class="gauge-checkpoint p1" title="Старт: 3 800 м">3 800</div>
+          <div class="gauge-checkpoint p2" title="Ледобур 1: 3 950 м">3 950</div>
+          <div class="gauge-checkpoint p3" title="Ледобур 2: 4 100 м">4 100</div>
+          <div class="gauge-checkpoint p4" title="Вершина: 4 200 м">4 200</div>
+        </div>
+        <div class="gauge-bottom-badge">
+          <span class="gauge-alt-label">ТЕКУЩАЯ ВЫСОТА</span>
+          <span class="gauge-alt-val" id="climb-hud-alt">3 800 М</span>
+        </div>
+      </aside>
+
+      <!-- Нижняя панель подсказки управления и счетчика шагов -->
+      <footer class="climb-footer-bar">
+        <div class="climb-counter-pill">
+          <span class="cc-label">ШАГ:</span>
+          <span class="cc-val" id="climb-hud-holds">0 / 10 (0/2)</span>
+        </div>
+        <div class="climb-hint-banner">
+          ⛏️ <strong>ИНСТРУКЦИЯ:</strong> Кликайте мышью поочерёдно обе точки зацепа (левая и правая рука)! Первый зацеп даёт <span class="kbd-badge">+50% времени</span> на второй удар.
+        </div>
+      </footer>
+
+      <!-- Модальное окно победы (Вершина покорена) -->
+      <div class="climb-victory-overlay" id="climb-victory-overlay">
+        <div class="climb-victory-card">
+          <div class="victory-badge">ЭКСПЕДИЦИОННЫЙ ТРИУМФ • ВЕРТИКАЛЬ ПРЕОДОЛЕНА</div>
+          <h2 class="victory-title">ЛЕДОВАЯ СТЕНА ПОКОРЕНА! (4 200 М)</h2>
+          <div class="victory-story">
+            Вы успешно преодолели 400 метров вертикального лазурного глетчера. Стальные кошки на рантованных ботинках и кованый ледоруб отработали безупречно — вы вышли на верхнее плато гребня!
+          </div>
+          
+          <div class="victory-stats-grid">
+            <div class="v-stat-card">
+              <span class="v-stat-label">ВЫСОТА РУБЕЖА:</span>
+              <span class="v-stat-val" id="cv-stat-alt">4 200 М</span>
+            </div>
+            <div class="v-stat-card">
+              <span class="v-stat-label">ВРЕМЯ ШТУРМА:</span>
+              <span class="v-stat-val" id="cv-stat-time">24 СЕК</span>
+            </div>
+            <div class="v-stat-card">
+              <span class="v-stat-label">ТОЧНОСТЬ УДАРОВ:</span>
+              <span class="v-stat-val" id="cv-stat-acc">100%</span>
+            </div>
+            <div class="v-stat-card">
+              <span class="v-stat-label">ЗАЦЕПОВ СДЕЛАНО:</span>
+              <span class="v-stat-val" id="cv-stat-holds">11 / 11</span>
+            </div>
+          </div>
+
+          <div class="victory-comment">
+            🧗‍♂️ <strong>Старший гид Александр Волков:</strong> <em>«Отличная работа с ледовым инструментом! Хват уверенный, ритм выдержан. Теперь впереди снежно-ледовый гребень следующего этапа!»</em>
+          </div>
+
+          <div class="victory-actions">
+            <button class="btn-climb-retry" id="btn-climb-retry">ПОВТОРИТЬ ШТУРМ [ R ]</button>
+            <button class="btn-climb-next" id="btn-climb-next">ВЫЙТИ НА ПЛАТО (ПРОДОЛЖИТЬ) →</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="climb.js"></script>
+<script>
+window.addEventListener("load", () => {
+  const climb = new IceWallClimbGame("climb-canvas");
+  window.testClimb = climb;
+  climb.resizeCanvas();
+  climb.start();
+
+  const params = new URLSearchParams(window.location.search);
+  const mode = params.get("mode") || "play";
+
+  if (mode === "one_hit") {
+    // Hit first hold only -> shows first axe planted and +50% time bonus on hold 2
+    setTimeout(() => {
+      if (climb.holds.length > 0) {
+        climb.attemptHoldHit(climb.holds[0]);
+      }
+    }, 200);
+  } else if (mode === "mid") {
+    // Advance 5 full strides
+    setTimeout(() => {
+      for (let s = 0; s < 5; s++) {
+        climb.currentStride++;
+      }
+      climb.altitude = 3800 + climb.currentStride * 40;
+      climb.progress = (climb.altitude - 3800) / 400;
+      climb.climber.y = climb.CLIMBER_BASE_Y;
+      climb.climber.targetY = climb.CLIMBER_BASE_Y;
+      climb.spawnNextHolds();
+      climb.updateHUD();
+    }, 150);
+  } else if (mode === "step9") {
+    // Advance to step 9 (the step user had in the screenshot)
+    setTimeout(() => {
+      climb.currentStride = 9;
+      climb.altitude = 3800 + climb.currentStride * 40; // 4160 M
+      climb.progress = (climb.altitude - 3800) / 400;
+      climb.visualProgress = climb.progress;
+      climb.climber.y = climb.CLIMBER_BASE_Y;
+      climb.climber.targetY = climb.CLIMBER_BASE_Y;
+      climb.anchors = [
+        { x: 640, y: 700 + 9 * 35 },
+        { x: 640, y: climb.CLIMBER_BASE_Y + 110 + 6 * 35 },
+        { x: 640, y: climb.CLIMBER_BASE_Y + 110 + 3 * 35 },
+        { x: 640, y: climb.CLIMBER_BASE_Y + 110 }
+      ];
+      climb.spawnNextHolds();
+      climb.updateHUD();
+    }, 150);
+  } else if (mode === "summit_view") {
+    setTimeout(() => {
+      climb.currentStride = 10;
+      climb.triggerSummit();
+    }, 150);
+  } else if (mode === "victory") {
+    setTimeout(() => {
+      climb.currentStride = 10;
+      climb.triggerSummit();
+      setTimeout(() => climb.openVictoryModal(), 300);
+    }, 150);
+  }
+
+  // Hook buttons
+  const btnRetry = document.getElementById("btn-climb-retry");
+  if (btnRetry) btnRetry.addEventListener("click", () => climb.start());
+
+  const btnReturn = document.getElementById("btn-return-trail");
+  if (btnReturn) btnReturn.addEventListener("click", () => alert("Возврат к Уровню 1"));
+});
+</script>
+</body>
+</html>

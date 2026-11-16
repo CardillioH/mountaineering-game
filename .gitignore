@@ -1,0 +1,8 @@
+node_modules/
+.env.local
+game/.env.local
+.vercel/
+backup/
+*.log
+__pycache__/
+*.pyc
