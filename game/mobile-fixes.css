@@ -1,32 +1,325 @@
-/* Мобильные правки: подключается ПОСЛЕ style.css */
+/* ==========================================================================
+   МОБИЛЬНЫЕ ПРАВКИ: ПОДКЛЮЧАЕТСЯ ПОСЛЕ STYLE.CSS
+   Обеспечивает идеальное отображение на смартфонах (iOS / Android)
+   как в альбомной (горизонтальной), так и в портретной ориентации.
+   ========================================================================== */
 
-/* Плашка описания предмета: компактнее на низких (альбомных) экранах телефона.
-   Позицию и границы экрана контролирует game.js (moveTooltip). */
+/* 1. БАЗОВОЕ ПОВЕДЕНИЕ НА МОБИЛЬНЫХ УСТРОЙСТВАХ */
+body.is-mobile-device {
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  overflow: hidden !important;
+  background: #04070c !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  touch-action: manipulation;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* В портретной ориентации сохраняем правильные пропорции 16:9 без искажения и растягивания */
+@media (orientation: portrait) {
+  body.is-mobile-device .game-viewport {
+    width: 100vw !important;
+    height: auto !important;
+    max-height: 100dvh !important;
+    aspect-ratio: 1376 / 768 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.95), 0 0 0 1px #1f2937 !important;
+    margin: auto !important;
+  }
+}
+
+/* В альбомной ориентации (основной режим игры на телефоне) заполняем весь экран */
+@media (orientation: landscape) {
+  body.is-mobile-device .game-viewport {
+    width: 100vw !important;
+    height: 100dvh !important;
+    max-width: 100vw !important;
+    max-height: 100dvh !important;
+    aspect-ratio: unset !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+/* 2. АДАПТАЦИЯ ЭКРАНА СБОРА РЮКЗАКА (#screen-gear) НА ЭКРАНАХ СМАРТФОНОВ (max-height <= 560px) */
+@media (max-height: 560px) and (orientation: landscape), (max-width: 920px) and (orientation: landscape) {
+  /* Шапка сцены: компактнее, не наезжает на предметы */
+  .scene-header {
+    top: 6px !important;
+    left: calc(14px + env(safe-area-inset-left, 0px)) !important;
+  }
+  .expedition-title {
+    font-size: clamp(11.5px, 2.0vw, 15px) !important;
+    line-height: 1.15 !important;
+    letter-spacing: 0.05em !important;
+  }
+  .expedition-subtitle {
+    font-size: clamp(8px, 1.2vw, 9.5px) !important;
+    margin-top: 2px !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  /* Верхние кнопки управления (настройки и возврат) */
+  .game-settings-btn {
+    width: 30px !important;
+    height: 30px !important;
+    top: 6px !important;
+    right: calc(8px + env(safe-area-inset-right, 0px)) !important;
+  }
+  .settings-gear-icon {
+    font-size: 15px !important;
+  }
+  .btn-return-camp {
+    top: 6px !important;
+    right: calc(44px + env(safe-area-inset-right, 0px)) !important;
+    font-size: 10px !important;
+    padding: 3px 8px !important;
+    height: 30px !important;
+    line-height: 22px !important;
+  }
+
+  /* Сетка предметов на брезенте: 4x3 аккуратно умещается слева */
+  .tarp-area {
+    left: calc(2% + env(safe-area-inset-left, 0px)) !important;
+    top: 15% !important;
+    width: 63% !important;
+    height: 82% !important;
+    gap: 4px !important;
+    padding: 2px !important;
+  }
+  .tarp-slot {
+    padding: 2px 2px !important;
+    border-radius: 4px !important;
+  }
+  .item-sprite {
+    max-height: clamp(32px, 12vh, 48px) !important;
+    max-width: 82% !important;
+  }
+  .item-name-plate {
+    font-size: clamp(7.5px, 1.15vw, 9px) !important;
+    padding: 1px 3px !important;
+    margin-top: 1px !important;
+  }
+  .item-weight-badge {
+    font-size: clamp(7px, 1.05vw, 8.5px) !important;
+    padding: 1px 3px !important;
+  }
+
+  /* Правая станция снаряжения: умещается на высоту экрана без скролла и обрезки кнопки */
+  .station-depot {
+    right: calc(1.5% + env(safe-area-inset-right, 0px)) !important;
+    top: 6px !important;
+    bottom: 6px !important;
+    width: 32% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+  }
+
+  /* Весы-безмен: масштаб уменьшен */
+  .mechanical-scale {
+    max-width: clamp(120px, 17vw, 150px) !important;
+    width: 100% !important;
+  }
+  .scale-gauge-svg {
+    max-width: 100% !important;
+    max-height: clamp(60px, 17vh, 80px) !important;
+  }
+  .scale-readout {
+    margin-top: -6px !important;
+  }
+  .scale-number {
+    font-size: clamp(14px, 2.2vw, 17px) !important;
+  }
+  .scale-unit {
+    font-size: 9.5px !important;
+  }
+  .scale-badge {
+    font-size: clamp(7px, 1.05vw, 8.5px) !important;
+    padding: 1px 5px !important;
+    margin-top: 1px !important;
+  }
+
+  /* Рюкзак: пропорциональный компактный размер */
+  .backpack-display {
+    margin: 1px 0 !important;
+  }
+  .backpack-art {
+    max-height: clamp(40px, 13vh, 58px) !important;
+    max-width: 75px !important;
+  }
+  .backpack-tag {
+    font-size: clamp(7.5px, 1.05vw, 9px) !important;
+    padding: 1px 6px !important;
+    margin-top: -3px !important;
+  }
+
+  /* Лента сложенных предметов */
+  .packed-strip-container {
+    padding: 2px 5px !important;
+    margin: 1px 0 !important;
+    max-width: 220px !important;
+    width: 100% !important;
+  }
+  .strip-header {
+    margin-bottom: 2px !important;
+  }
+  .strip-title {
+    font-size: 7.5px !important;
+  }
+  .strip-btn-clear {
+    font-size: 7px !important;
+    padding: 1px 4px !important;
+  }
+  .packed-icons-row {
+    gap: 3px !important;
+    min-height: 20px !important;
+  }
+  .packed-icon-item {
+    width: 20px !important;
+    height: 20px !important;
+    border-radius: 3px !important;
+  }
+
+  /* Кнопка «НАЧАТЬ ШТУРМ»: всегда видна внизу и доступна для тапа */
+  .launch-action {
+    width: 100% !important;
+    max-width: 220px !important;
+    margin: 0 !important;
+  }
+  .btn-launch {
+    padding: clamp(5px, 1.2vh, 8px) 10px !important;
+    font-size: clamp(11px, 1.6vw, 13px) !important;
+    border-radius: 5px !important;
+  }
+  .launch-status-hint {
+    font-size: clamp(7px, 0.95vw, 8px) !important;
+    margin-top: 1px !important;
+  }
+}
+
+/* 3. АДАПТАЦИЯ ЭКРАНА ЗАГРУЗКИ (#screen-loading) ДЛЯ СМАРТФОНОВ */
+@media (max-height: 560px) {
+  .loading-scene {
+    gap: 6px !important;
+    width: min(380px, 90%) !important;
+  }
+  .loading-title {
+    font-size: clamp(16px, 3.2vw, 22px) !important;
+  }
+  .loading-subtitle {
+    font-size: clamp(8.5px, 1.5vw, 10.5px) !important;
+    margin-top: -3px !important;
+  }
+  .loading-climber-canvas {
+    width: 54px !important;
+    height: 72px !important;
+  }
+  .loading-bar-wrap {
+    height: 5px !important;
+  }
+  .loading-status {
+    font-size: 9px !important;
+  }
+  .loading-hint {
+    font-size: 8px !important;
+  }
+}
+
+/* 4. ТУЛТИП ПОЛЕВОГО ДНЕВНИКА */
 .field-notebook-tooltip {
-  max-width: min(310px, calc(100vw - 20px));
+  max-width: min(290px, calc(100vw - 20px));
   box-sizing: border-box;
 }
 
 @media (max-height: 520px) {
   .field-notebook-tooltip {
-    padding: 8px 12px !important;
+    padding: 6px 10px !important;
   }
   .field-notebook-tooltip .fn-header { margin-bottom: 2px; }
   .field-notebook-tooltip .fn-title {
-    font-size: 15px !important;
+    font-size: 13.5px !important;
     line-height: 1.15 !important;
-    margin: 2px 0 4px !important;
+    margin: 2px 0 3px !important;
   }
   .field-notebook-tooltip .fn-desc {
-    font-size: 12px !important;
-    line-height: 1.35 !important;
-    margin: 0 0 6px !important;
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+    margin: 0 0 4px !important;
   }
-  .field-notebook-tooltip .fn-footer { font-size: 10px !important; padding-top: 5px !important; }
+  .field-notebook-tooltip .fn-footer {
+    font-size: 9px !important;
+    padding-top: 3px !important;
+  }
 }
 
-/* Холст платформера: размер задаёт JS (DPR-рендер), страница не должна его растягивать/скроллить */
+/* 5. ХОЛСТ ПЛАТФОРМЕРА */
 .platformer-canvas {
   display: block;
   touch-action: none;
+}
+
+/* 6. СЕНСОРНОЕ УПРАВЛЕНИЕ: КНОПКИ В ПЛАТФОРМЕРЕ */
+@media (max-height: 520px) {
+  .touch-cluster-left {
+    left: calc(12px + env(safe-area-inset-left, 0px)) !important;
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px)) !important;
+    gap: 8px !important;
+  }
+  .touch-cluster-right {
+    right: calc(12px + env(safe-area-inset-right, 0px)) !important;
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px)) !important;
+    gap: 8px !important;
+  }
+  .touch-btn {
+    width: 56px !important;
+    height: 56px !important;
+  }
+  .touch-btn .touch-icon {
+    font-size: 20px !important;
+  }
+  .touch-btn-jump {
+    width: 64px !important;
+    height: 64px !important;
+  }
+  .touch-btn-jump .touch-icon {
+    font-size: 22px !important;
+  }
+  body.is-mobile-device .backpack-btn {
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px)) !important;
+    left: calc(140px + env(safe-area-inset-left, 0px)) !important;
+    width: 52px !important;
+    height: 52px !important;
+  }
+}
+
+/* 7. МОДАЛЬНЫЕ ОКНА И ДИАЛОГИ НА МОБИЛЬНЫХ */
+@media (max-height: 520px) {
+  .comic-minigame-card {
+    max-height: 94dvh !important;
+    overflow-y: auto !important;
+    padding: 8px 12px !important;
+    gap: 4px !important;
+  }
+  .cmg-title {
+    font-size: 15px !important;
+  }
+  .cmg-subtitle {
+    font-size: 10px !important;
+  }
+  .cmg-options-grid {
+    gap: 4px !important;
+  }
+  .cmg-opt-btn {
+    padding: 5px 8px !important;
+    font-size: 11px !important;
+  }
 }
