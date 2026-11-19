@@ -829,7 +829,7 @@ class Level4Platformer {
     if (p.onLadderClimb) {
       // Анимационный таймер лестницы (1 смена кадра = 0.3 секунды)
       if (this.keys.up || this.keys.down || this.keys.left || this.keys.right) {
-        p.ladderAnimTimer = (p.ladderAnimTimer || 0) + dt * 3.3;
+        p.ladderAnimTimer = (p.ladderAnimTimer || 0) + dt * 1.0;
       }
       p.vx = 0;
       p.vy = 0;
