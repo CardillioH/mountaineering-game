@@ -45,7 +45,11 @@ class Level4Platformer {
       jump: new Image(),
       climb: new Image(),
       collapsed: new Image(),
-      backdrop: new Image()
+      backdrop: new Image(),
+      ladderV1: new Image(),
+      ladderV2: new Image(),
+      ladderH1: new Image(),
+      ladderH2: new Image()
     };
 
     this.sprites.idle.src = "../assets/character/sprites/climber_idle.png";
@@ -56,9 +60,13 @@ class Level4Platformer {
     this.sprites.jump.src = "../assets/character/sprites/climber_jump.png";
     this.sprites.climb.src = "../assets/character/sprites/climber_climb.png";
     this.sprites.collapsed.src = "../assets/character/sprites/climber_collapsed.png";
+    this.sprites.ladderV1.src = "../assets/character/sprites/climber_ladder_v1.png";
+    this.sprites.ladderV2.src = "../assets/character/sprites/climber_ladder_v2.png";
+    this.sprites.ladderH1.src = "../assets/character/sprites/climber_ladder_h1.png";
+    this.sprites.ladderH2.src = "../assets/character/sprites/climber_ladder_h2.png";
     this.sprites.backdrop.src = "../assets/environment/level4_backdrop.jpg";
 
-    ["idle", "run1", "run2", "run3", "run4", "jump", "climb", "collapsed"].forEach(k => {
+    ["idle", "run1", "run2", "run3", "run4", "jump", "climb", "collapsed", "ladderV1", "ladderV2", "ladderH1", "ladderH2"].forEach(k => {
       const img = this.sprites[k];
       img.onload = () => {
         if (window.prepareCleanSprite) {
@@ -819,6 +827,10 @@ class Level4Platformer {
     }
 
     if (p.onLadderClimb) {
+      // Анимационный таймер лестницы (1 смена кадра = 0.3 секунды)
+      if (this.keys.up || this.keys.down || this.keys.left || this.keys.right) {
+        p.ladderAnimTimer = (p.ladderAnimTimer || 0) + dt * 3.3;
+      }
       p.vx = 0;
       p.vy = 0;
       if (this.keys.up) p.y -= 3.8 * dt;
@@ -1724,7 +1736,16 @@ class Level4Platformer {
     if (p.facing < 0) ctx.scale(-1, 1);
 
     let key = "idle";
-    if (p.onLadderClimb) key = "climb";
+    if (p.onLadderClimb) {
+      // Вертикальная (90°) или горизонтальная (180°) лестница
+      const ladState = this.ladder ? this.ladder.state : "vertical";
+      const frame = Math.floor((this.player.ladderAnimTimer || 0)) % 2;
+      if (ladState === "bridge") {
+        key = frame === 0 ? "ladderH1" : "ladderH2";
+      } else {
+        key = frame === 0 ? "ladderV1" : "ladderV2";
+      }
+    }
     else if (!p.grounded) key = "jump";
     else if (Math.abs(p.vx) > 0.4) {
       const idx = (Math.floor(p.runCycleTimer) % 4) + 1;
